@@ -5,7 +5,10 @@
     "pre-commit@latest",
     "gitleaks@latest",
     "cz-cli@latest",
-    "nodePackages.pnpm@latest"
+    "nodePackages.pnpm@latest",
+    "csvkit@latest",
+    "cowsay@latest",
+    "lolcat@latest"
   ],
   "shell": {
     "init_hook": [
@@ -14,7 +17,8 @@
     "scripts": {
       "init": [
         "pre-commit install",
-        "[[ ! -e ./node_modules/cz-git ]] && commitizen init cz-git --pnpm --save-dev --save-exact --force"
+        "if [[ ! -e ./node_modules/cz-git ]]; then commitizen init cz-git --pnpm --save-dev --save-exact --force; fi",
+        "cowsay -f koala 'Please try `h` in shell' | lolcat"
       ]
     }
   }

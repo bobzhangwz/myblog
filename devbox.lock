@@ -1,6 +1,138 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "cowsay@latest": {
+      "last_modified": "2024-03-08T13:51:52Z",
+      "resolved": "github:NixOS/nixpkgs/a343533bccc62400e8a9560423486a3b6c11a23b#cowsay",
+      "source": "devbox-search",
+      "version": "3.7.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4k5xyh64lhz5rghx6qcz55nc3fmkcqv2-cowsay-3.7.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/b7bg7h2i6xarv53z68ad9ssn29w65zm2-cowsay-3.7.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/4k5xyh64lhz5rghx6qcz55nc3fmkcqv2-cowsay-3.7.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/9kbzgs3hz0y8dvg2ry5gfwll37kmyaw1-cowsay-3.7.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/7fp2hn2vb02hf2lh236f8pp9ac17cjkn-cowsay-3.7.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/9kbzgs3hz0y8dvg2ry5gfwll37kmyaw1-cowsay-3.7.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/gh15hl6ivncq99b1azsz82gky42n0903-cowsay-3.7.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/xwdi4bfnznyvagbxziig9myqf9jdn5j6-cowsay-3.7.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/gh15hl6ivncq99b1azsz82gky42n0903-cowsay-3.7.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/k67mjgib9w2dzdma0cpyj2wglwz0f0qa-cowsay-3.7.0",
+              "default": true
+            },
+            {
+              "name": "man",
+              "path": "/nix/store/9x6hlma9kf0gr5cff2hciy3g27g57af2-cowsay-3.7.0-man",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/k67mjgib9w2dzdma0cpyj2wglwz0f0qa-cowsay-3.7.0"
+        }
+      }
+    },
+    "csvkit@latest": {
+      "last_modified": "2024-03-16T16:57:42Z",
+      "resolved": "github:NixOS/nixpkgs/d211b80d2944a41899a6ab24009d9729cca05e49#csvkit",
+      "source": "devbox-search",
+      "version": "1.4.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/3hwd3myhknjb9d658bcg2pclnyx34jx9-csvkit-1.4.0",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/gvrh0d8rk9x0na7qr54zjhvjj8vwnd0q-csvkit-1.4.0-dist"
+            }
+          ],
+          "store_path": "/nix/store/3hwd3myhknjb9d658bcg2pclnyx34jx9-csvkit-1.4.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/nlg64b65g17ykbpwwgky02pp0kxgqdsa-csvkit-1.4.0",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/phxzbvh48j77yc1njbws8nrlbv1qk7jn-csvkit-1.4.0-dist"
+            }
+          ],
+          "store_path": "/nix/store/nlg64b65g17ykbpwwgky02pp0kxgqdsa-csvkit-1.4.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/cx5b0zqs298ghlc122ym316928b58s8m-csvkit-1.4.0",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/7x6n7z1zah3vznzxg968sz53c7palygh-csvkit-1.4.0-dist"
+            }
+          ],
+          "store_path": "/nix/store/cx5b0zqs298ghlc122ym316928b58s8m-csvkit-1.4.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/6fsa9gp6jhh80w7fbwl2vk73vr0hvhv6-csvkit-1.4.0",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/fq0mzqrw70dngjg4khiq6vbs3333f1fi-csvkit-1.4.0-dist"
+            }
+          ],
+          "store_path": "/nix/store/6fsa9gp6jhh80w7fbwl2vk73vr0hvhv6-csvkit-1.4.0"
+        }
+      }
+    },
     "cz-cli@latest": {
       "last_modified": "2024-03-16T16:57:42Z",
       "resolved": "github:NixOS/nixpkgs/d211b80d2944a41899a6ab24009d9729cca05e49#cz-cli",
@@ -94,6 +226,54 @@
             }
           ],
           "store_path": "/nix/store/i8gdsrljmkmayh5bzhk85i4cizdvjg4m-gitleaks-8.18.2"
+        }
+      }
+    },
+    "lolcat@latest": {
+      "last_modified": "2024-03-08T13:51:52Z",
+      "resolved": "github:NixOS/nixpkgs/a343533bccc62400e8a9560423486a3b6c11a23b#lolcat",
+      "source": "devbox-search",
+      "version": "100.0.1",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/8qfzfk04rsyqfwl1xcjs3ia92j31k3ch-lolcat-100.0.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/8qfzfk04rsyqfwl1xcjs3ia92j31k3ch-lolcat-100.0.1"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/h9ly73zgyrjiq7xg2vqpb3cjgv1f927y-lolcat-100.0.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/h9ly73zgyrjiq7xg2vqpb3cjgv1f927y-lolcat-100.0.1"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/nxgs64djh3n66gf8i52r9zqbrprr4ybp-lolcat-100.0.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/nxgs64djh3n66gf8i52r9zqbrprr4ybp-lolcat-100.0.1"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/bvwf47kyngdyk3z6vldxp5l5g9cpdfyq-lolcat-100.0.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/bvwf47kyngdyk3z6vldxp5l5g9cpdfyq-lolcat-100.0.1"
         }
       }
     },

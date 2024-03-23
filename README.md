@@ -22,9 +22,9 @@ source ~/.zshrc
 ## TODO
 
 * [x] pre-commit
-* [ ] commitizen
-* [ ] command alias
+* [x] commitizen
+* [x] command alias
 * [ ] github action
-* [ ] gitleaks
+* [x] gitleaks
 * [x] devbox service
 * [ ] renovate
