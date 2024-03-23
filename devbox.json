@@ -3,7 +3,9 @@
   "packages": [
     "python312Packages.mkdocs-material@latest",
     "pre-commit@latest",
-    "gitleaks@latest"
+    "gitleaks@latest",
+    "cz-cli@latest",
+    "nodePackages.pnpm@latest"
   ],
   "shell": {
     "init_hook": [
@@ -11,7 +13,8 @@
     ],
     "scripts": {
       "init": [
-        "pre-commit install"
+        "pre-commit install",
+        "[[ ! -e ./node_modules/cz-git ]] && commitizen init cz-git --pnpm --save-dev --save-exact --force"
       ]
     }
   }
