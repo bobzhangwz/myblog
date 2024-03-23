@@ -26,5 +26,5 @@ source ~/.zshrc
 * [ ] command alias
 * [ ] github action
 * [ ] gitleaks
-* [ ] devbox service
+* [x] devbox service
 * [ ] renovate

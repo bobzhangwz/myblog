@@ -14,3 +14,13 @@ repos:
       - id: fix-byte-order-marker
       - id: mixed-line-ending
       - id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: gitleaks
+        name: gitleaks
+        language: system
+        pass_filenames: false
+        verbose: true
+        types: [text]
+        entry: gitleaks protect --source . --staged --redact --no-banner
+        stages: [ commit ]
