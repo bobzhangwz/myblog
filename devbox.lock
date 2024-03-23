@@ -1,0 +1,69 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "python312Packages.mkdocs-material@latest": {
+      "last_modified": "2024-03-08T13:51:52Z",
+      "resolved": "github:NixOS/nixpkgs/a343533bccc62400e8a9560423486a3b6c11a23b#python312Packages.mkdocs-material",
+      "source": "devbox-search",
+      "version": "9.5.13",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/pfkczvwqzjsgaw1pn3lzj13pc60j8k97-python3.12-mkdocs-material-9.5.13",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/4j6r91i5rjlasbh9s1k0x4f10yvnsq7l-python3.12-mkdocs-material-9.5.13-dist"
+            }
+          ],
+          "store_path": "/nix/store/pfkczvwqzjsgaw1pn3lzj13pc60j8k97-python3.12-mkdocs-material-9.5.13"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/wmv6lp164pr0q5ajpkc0gz2pmkf4szmh-python3.12-mkdocs-material-9.5.13",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/jcj989s23yj840kgvhdhk7cybyav2m2k-python3.12-mkdocs-material-9.5.13-dist"
+            }
+          ],
+          "store_path": "/nix/store/wmv6lp164pr0q5ajpkc0gz2pmkf4szmh-python3.12-mkdocs-material-9.5.13"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/fin0q6pnslbyzmav0wlgl3a67ii7vi42-python3.12-mkdocs-material-9.5.13",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/599h5qwd24lgnz9fdrl9vgs980naanq9-python3.12-mkdocs-material-9.5.13-dist"
+            }
+          ],
+          "store_path": "/nix/store/fin0q6pnslbyzmav0wlgl3a67ii7vi42-python3.12-mkdocs-material-9.5.13"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qjwqi819m5h55ldjv78hcpcy4pqwg98c-python3.12-mkdocs-material-9.5.13",
+              "default": true
+            },
+            {
+              "name": "dist",
+              "path": "/nix/store/a4al3gqxh8ri7l60zl2npf14ypqygsgy-python3.12-mkdocs-material-9.5.13-dist"
+            }
+          ],
+          "store_path": "/nix/store/qjwqi819m5h55ldjv78hcpcy4pqwg98c-python3.12-mkdocs-material-9.5.13"
+        }
+      }
+    }
+  }
+}
