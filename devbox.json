@@ -1,21 +1,22 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetpack-io/devbox/0.10.1/.schema/devbox.schema.json",
   "packages": [
-    "python312Packages.mkdocs-material@latest",
     "pre-commit@latest",
     "gitleaks@latest",
     "cz-cli@latest",
     "nodePackages.pnpm@latest",
     "csvkit@latest",
     "cowsay@latest",
-    "lolcat@latest"
+    "lolcat@latest",
+    "python@3.12"
   ],
   "shell": {
     "init_hook": [
-      "echo 'Welcome to devbox!' > /dev/null"
+      "source $VENV_DIR/bin/activate"
     ],
     "scripts": {
       "init": [
+        "pip install -r requirements.txt -q",
         "pre-commit install",
         "if [[ ! -e ./node_modules/cz-git ]]; then commitizen init cz-git --pnpm --save-dev --save-exact --force; fi",
         "cowsay -f koala 'Please try `h` in shell' | lolcat"
