@@ -30,5 +30,6 @@ source ~/.zshrc
 * [x] command alias
 * [x] gitleaks
 * [x] devbox service
+* [ ] customize color/icon
 * [ ] badge
 * [ ] renovate

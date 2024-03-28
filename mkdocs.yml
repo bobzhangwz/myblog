@@ -1,3 +1,25 @@
 site_name: ICode
 theme:
   name: material
+  features:
+    - navigation.tabs
+    - navigation.indexes
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.path
+    - toc.follow
+    - navigation.top
+plugins:
+  - blog:
+      blog_dir: blog
+      post_date_format: short
+      post_url_date_format: yyyy/MM
+      post_readtime: true
+repo_url: https://github.com/bobzhangwz/myblog
+edit_uri: blob/master/docs/
+nav:
+  - Home: index.md
+  - About:
+    - "release Note": about.md
+  - Blog:
+    - blog/index.md
