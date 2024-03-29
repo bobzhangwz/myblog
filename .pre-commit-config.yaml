@@ -2,7 +2,6 @@ fail_fast: true
 default_install_hook_types:
   - pre-commit
   - pre-push
-  - prepare-commit-msg
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -25,9 +24,3 @@ repos:
         types: [text]
         entry: gitleaks protect --source . --staged --redact --no-banner
         stages: [ commit ]
-      - id: co-autor
-        name: co-author
-        language: system
-        verbose: true
-        entry: ./co-author.sh
-        stages: [ commit-msg ]

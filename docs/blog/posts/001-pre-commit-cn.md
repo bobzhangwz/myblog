@@ -8,7 +8,7 @@ date:
   created: 2024-03-26
 ---
 
-# 如何丝滑的提交(1) - pre-commit
+# 如何优雅地提交(1) - pre-commit
 
 ## TLDR
 
@@ -124,6 +124,7 @@ repos:
 ##### 1. checkov
 
 `checkov`, 能帮助扫描一些有潜在配置风险的代码扫描工具, 如果你的代码里有 `terraform` 配置文件, `kubernetes`, `ansible` 之类的IoC(基础设置即代码)代码, 推荐使用. 参考[官网文档](https://www.checkov.io/4.Integrations/pre-commit.html)
+
 ```yaml
 - repo: https://github.com/bridgecrewio/checkov.git
   rev: '3.2.47' # change to tag or sha
@@ -139,6 +140,7 @@ repos:
 ##### 2. gitleaks
 
 `gitleaks` 能帮助开发者扫描代码库中可能泄露的密码, 秘钥; 参考[官方文档](https://github.com/gitleaks/gitleaks/tree/master?tab=readme-ov-file#pre-commit)
+
 ```yaml
 repos:
   - repo: https://github.com/gitleaks/gitleaks
@@ -150,6 +152,7 @@ repos:
 ##### 3. Conventional Commits
 
 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) 是一个关于 commit message 的约定, 开发者可以通过一些工具自动生成符合格式的 提交信息, 如 [commitizen](https://github.com/commitizen-tools/commitizen), [cz-cli](https://github.com/commitizen/cz-cli). 通过其 `pre-commit` 插件, 让开发者们有统一风格的提交信息.
+
 ```yaml
 repos:
   - repo: https://github.com/commitizen-tools/commitizen
