@@ -672,10 +672,10 @@
     </div>
   </header>
   <div class="md-post__content md-typeset">
-    <h2 id="1-pre-commit"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/">如何丝滑的提交(1) - pre-commit</a></h2>
-<h3 id="tldr"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#tldr">TLDR</a></h3>
+    <h2 id="1-pre-commit"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/">如何优雅地提交(1) - pre-commit</a></h2>
+<h3 id="tldr"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#tldr">TLDR</a></h3>
 <p>本文介绍了一个工具 <a href="https://pre-commit.com/">pre-commit</a>是用来管理 <code>git-hook</code>. 同时推荐几个常用插件, 并总结了一些项目中的最佳实践.</p>
-<h3 id="_1"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#_1">正文</a></h3>
+<h3 id="_1"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#_1">正文</a></h3>
 <p><code>GIT</code> 是一个非常流量的版本工具. 在程序员的日常开发中, <code>GIT</code> 帮助我们非常有效率地管理代码的历史几率.
 通过 <code>GIT</code>, 开发者可以使用各种命令 <code>commit</code>, <code>push</code>, <code>merge</code>, 来管理源代码, 和其他开发者一起协作来开发应用.</p>
 <p>在日常开发中, 我们会经常使用 <code>Git Hooks</code> 来进行提交前(pre-commit, pre-push)检查, 来保证推到远程的代码符合规范, 并且测试通过, 以提早发现问题, 从而不阻塞部署流水线.</p>
@@ -692,15 +692,15 @@ build.dependsOn addPreCommitGitHookOnBuild
 </code></pre>
 <p><a href="https://pre-commit.com/">pre-commit</a> 正是一个开源的专注于管理 <code>Git Hooks</code> 的框架, 虽然他是由 python 编写的, 但他并不像 <code>husky</code> 一样, 仅仅只局限于一种语言,
 他对多种编程语言做了支持, 并提供了插件机制, 所以他可以是<code>通用</code>的.</p>
-<h3 id="_2"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#_2">简单入门</a></h3>
+<h3 id="_2"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#_2">简单入门</a></h3>
 <p>参照<a href="https://pre-commit.com/">pre-commit</a>官方网站, 快速上手.</p>
 <p>这里以一个 gradle 构建的 Java 项目为例</p>
-<h4 id="_3"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#_3">安装</a></h4>
+<h4 id="_3"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#_3">安装</a></h4>
 <pre><code class="language-bash">pip install pre-commit
 # 或
 brew install pre-commit
 </code></pre>
-<h4 id="_4"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#_4">配置文件</a></h4>
+<h4 id="_4"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#_4">配置文件</a></h4>
 <p>需要在项目根目录创建 <code>.pre-commit-config.yaml</code></p>
 <pre><code class="language-yaml">fail_fast: true
 # 指定需要初始化安装的 hooks
@@ -725,14 +725,14 @@ repos:
         stages: [ push ]
 </code></pre>
 <p>通过配置 <code>files: 'src/.*'</code> 和 <code>types_or: [kotlin, sql, groovy, java-properties]</code>, 开发提交代码时, 如果没有改动的对应的后端代码, <code>gradle check</code> 就不会执行.</p>
-<h4 id="hooks"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#hooks">初始化 hooks</a></h4>
+<h4 id="hooks"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#hooks">初始化 hooks</a></h4>
 <p>新克隆的代码都需要执行如下脚本, 来初始化 <code>Git Hooks</code>. 之后当每次新推(push)代码, 并且满足配置文件的条件时, 就会触发 <code>./gradlew check</code> 命令</p>
 <pre><code class="language-bash">$ pre-commit install
 pre-commit installed at .git/hooks/pre-commit
 $ pre-commit install-hooks
 </code></pre>
-<h3 id="_5"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#_5">最佳实践</a></h3>
-<h4 id="_6"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#_6">使用插件</a></h4>
+<h3 id="_5"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#_5">最佳实践</a></h3>
+<h4 id="_6"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#_6">使用插件</a></h4>
 <p><code>pre-commit</code> 提供了插件机制, 开发人员能方便地将通用的一些检查抽成可复用的插件. 通过配置, 项目库中可以快速引入这些插件. 更多插件, 请移步 <a href="https://pre-commit.com/hooks.html">插件库</a></p>
 <p><code>pre-commit</code> 官方提供一些常用的插件, 比如 <code>trailing-whitespace</code>, <code>end-of-file-fixer</code> 等等, 更多内容, 可以参考 <a href="https://github.com/pre-commit/pre-commit-hooks">pre-commit-hooks</a>.</p>
 <p>下面的 <code>pre-commit</code> 配置, 基本在所有项目都能使用, 他能帮助开发者在提交代码前快速做一些检查, 并且修复一些发现的问题, 保证代码风格一致.</p>
@@ -749,9 +749,9 @@ $ pre-commit install-hooks
       - id: mixed-line-ending
       - id: trailing-whitespace
 </code></pre>
-<h5 id="_7"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#_7">推荐插件</a></h5>
+<h5 id="_7"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#_7">推荐插件</a></h5>
 <p>这里推荐一些日常开发中常用到的一些 <code>pre-commit</code> 插件, 适用于大部分项目</p>
-<h6 id="1-checkov"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#1-checkov">1. checkov</a></h6>
+<h6 id="1-checkov"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#1-checkov">1. checkov</a></h6>
 <p><code>checkov</code>, 能帮助扫描一些有潜在配置风险的代码扫描工具, 如果你的代码里有 <code>terraform</code> 配置文件, <code>kubernetes</code>, <code>ansible</code> 之类的IoC(基础设置即代码)代码, 推荐使用. 参考<a href="https://www.checkov.io/4.Integrations/pre-commit.html">官网文档</a></p>
 <pre><code class="language-yaml">- repo: https://github.com/bridgecrewio/checkov.git
   rev: '3.2.47' # change to tag or sha
@@ -763,7 +763,7 @@ $ pre-commit install-hooks
     # - id: checkov_secrets
     # - id: checkov_secrets_container
 </code></pre>
-<h6 id="2-gitleaks"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#2-gitleaks">2. gitleaks</a></h6>
+<h6 id="2-gitleaks"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#2-gitleaks">2. gitleaks</a></h6>
 <p><code>gitleaks</code> 能帮助开发者扫描代码库中可能泄露的密码, 秘钥; 参考<a href="https://github.com/gitleaks/gitleaks/tree/master?tab=readme-ov-file#pre-commit">官方文档</a></p>
 <pre><code class="language-yaml">repos:
   - repo: https://github.com/gitleaks/gitleaks
@@ -771,7 +771,7 @@ $ pre-commit install-hooks
     hooks:
       - id: gitleaks
 </code></pre>
-<h6 id="3-conventional-commits"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#3-conventional-commits">3. Conventional Commits</a></h6>
+<h6 id="3-conventional-commits"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#3-conventional-commits">3. Conventional Commits</a></h6>
 <p><a href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits</a> 是一个关于 commit message 的约定, 开发者可以通过一些工具自动生成符合格式的 提交信息, 如 <a href="https://github.com/commitizen-tools/commitizen">commitizen</a>, <a href="https://github.com/commitizen/cz-cli">cz-cli</a>. 通过其 <code>pre-commit</code> 插件, 让开发者们有统一风格的提交信息.</p>
 <pre><code class="language-yaml">repos:
   - repo: https://github.com/commitizen-tools/commitizen
@@ -779,7 +779,7 @@ $ pre-commit install-hooks
     hooks:
       - id: commitizen
 </code></pre>
-<h4 id="_8"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#_8">实时查看输出结果</a></h4>
+<h4 id="_8"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#_8">实时查看输出结果</a></h4>
 <p><code>pre-commit</code> 会假设所有的检查会在很短的时间内执行完, 所以都是在等命令执行完成之后, 输出对应的结果.
 当时如果有时候执行的 hook 需要很长的时间运行(&gt;3min), 开发者不能实时收到运行状态.</p>
 <p>如下例, 当测试过多, 并且依赖过多, 会导致 <code>gradle check</code>, 执行时间超过 <code>5 min</code>, 如果开发人员不能实时得到允许的状态, 会对运行的检查产生怀疑, 从而跳过检查. 体验不友好.</p>
@@ -792,7 +792,7 @@ $ pre-commit install-hooks
         types_or: [kotlin, sql, groovy, java-properties]
 </code></pre>
 <p>所以当跑到任务时间过长(&gt;30s), 需要实时接收到消息时, 可以使用 <code>bash -c './gradlew check &amp;&gt;/dev/tty'</code>, 让开发者能实时知道任务进度.</p>
-<h4 id="_9"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#_9">只检查修改到的文件</a></h4>
+<h4 id="_9"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#_9">只检查修改到的文件</a></h4>
 <p>有时候开发提交代码时, 会执行 <code>yarn lint</code> 命令, 去检查代码风格按照约定的格式执行.
 <code>lint</code> 命令通常会对全部的文件进行扫描, 不管你有没有做了更改. 如果项目比较大, 这会导致很长的检查时间, 不能有效率的提交代码.</p>
 <pre><code class="language-yaml">repos:
@@ -815,7 +815,7 @@ $ pre-commit install-hooks
         types_or: [javascript]
         stages: [ push ]
 </code></pre>
-<h4 id="hook"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#hook">hook 执行策略</a></h4>
+<h4 id="hook"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#hook">hook 执行策略</a></h4>
 <p>在实践中, 通常对于代码的检查分为两种</p>
 <ol>
 <li><code>lint</code>, 对代码风格进行验证, 运行时间短.</li>
@@ -849,7 +849,7 @@ hooks:
     verbose: true
     stages: [ push ]
 </code></pre>
-<h3 id="_10"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%B8%9D%E6%BB%91%E7%9A%84%E6%8F%90%E4%BA%A41---pre-commit/#_10">总结</a></h3>
+<h3 id="_10"><a class="toclink" href="2024/03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/#_10">总结</a></h3>
 <p><code>pre-commit</code> 极大的简化了 git-hooks 的管理工作, 同时他丰富的插件生态, 能方便的帮助一个项目快速集成一些 安全检查工具, 风格检查工具 和 测试工具, 提高开发/交付效率.</p>
 <p>推荐指数: ⭐️⭐️⭐️⭐️⭐️</p>
     
