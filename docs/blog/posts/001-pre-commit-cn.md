@@ -12,7 +12,7 @@ date:
 
 ## TLDR
 
-本文介绍了一个工具 [pre-commit](https://pre-commit.com/)是用来管理 `git-hook`. 同时推荐几个常用插件, 并总结了一些项目中的最佳实践.
+本文介绍了一个工具 [pre-commit](https://pre-commit.com/)是用来管理 `git-hooks`. 同时推荐几个常用插件, 并总结了一些项目中的最佳实践.
 
 ## 正文
 
