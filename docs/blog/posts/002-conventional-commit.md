@@ -12,6 +12,13 @@ date:
 
 ## TLDR
 
+本文介绍了使用 devbox, 以开发环境即代码的方式搭建了团队本地开发环境, 同时介绍了一些使用 devbox 实践, 帮助团队提高开发效率
+
+1. 集成 `pre-commit`
+2. 集成 `co-author` 脚本
+3. 定制化命令
+
+
 
 ## 挑战
 
@@ -32,8 +39,8 @@ date:
 1. **文档更新滞后** - 大多数时候, 随着项目的演进, 文档大部分时候总是滞后并缺少维护. 最终都是新人花很多的时间进行定位
 2. **运行环境不一致** - 项目中成员的机器可能都装了不同版本的 JVM, NodeJs, ruby, python 作为默认开发环境, 各个版本五花八门. 导致应用在某些特定版本的开发环境上表现不一致. 当在不同项目中切换时, 经常需要引入不同虚拟机管理工具 如 `NVM`, `RVM`, `asdf`, `SDKMan`
 3. **手动安装的不可重复性** - 手动安装的命令/程序不可靠,
-   * 如命令版本太新/太旧导致, 导致不能运行
-   * 如经常会漏掉执行一些初始化脚本
+     * 如命令版本太新/太旧导致, 导致不能运行
+     * 如经常会漏掉执行一些初始化脚本
 
 ## 为什么是 Devbox
 
@@ -176,6 +183,8 @@ EOF
 
 至此, 团队成员只需首次安装 `direnv` 和 `devbox` 即可.它们将自动帮助团队统一(unify)开发环境, 且无需任何额外配置.
 
+![direnv](./002-conventional-commit/devbox-direnv.gif)
+
 ### 自动初始化 - pre-commit hooks
 
 [pre-commit](https://pre-commit.com/#intro) 是一个命令行工具, 它可通过一个简单的配置文件管理和维护 `git commit/push` 钩子。
@@ -273,6 +282,12 @@ echo "$MESSAGE" > $1
 }
 ```
 
+![co author](./002-conventional-commit/co-author.gif)
+
+由于录制原因, co-author 真实截图如下:
+
+![co author](./002-conventional-commit/co-author.png)
+
 ### 统一的提交格式 - 约定式提交(Conventional Commits)
 
 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) 是
@@ -323,6 +338,10 @@ Refs: #123
   }
 }
 ```
+
+如果团队开发每次提交代码需要将 Jira 卡号加入 commit 的信息可以使用插件 `cz-conventional-changelog-for-jira`, 如图
+
+![commit](./002-conventional-commit/commit.gif)
 
 ### 定制命令
 
@@ -378,7 +397,15 @@ PATH_add "$alias_dir"
 * `gpush`, 推送代码到远端分支
 * `h`, 帮助列出所有的快捷命令, 但是需要 `devbox` 提前安装 `csvlook` 和 `lolcat`
 
-#### 链接
+效果如下
+
+![customize command](./002-conventional-commit/customize-command.gif)
+
+#### 定制网址速查表
+
+利用以上脚本, 同时可以将项目相关的一些链接/网址加入到表中, 让开发人员在开发过程中丝滑地找到相关资源; 还可以加入 Onboarding 的链接, 方便新人.
+
+![handy link](./002-conventional-commit/handy-link.png)
 
 ### 本地秘钥管理
 
@@ -400,6 +427,6 @@ export GITHUB_TOKEN='xxx'
 
 至此, 在进入目录项目后, 这些关于秘钥的环境变量才会加载.
 
-## Other
+## 写在最后
 
-Replace for docker
+结合 devbox 可以一定程度帮助团队提高开发效率. Devbox 也可以和各种 CI 平台集成, 提供统一的构建和开发环境, 并且devbox 也提供了对 [process-compose](https://github.com/F1bonacc1/process-compose) 集成, 作为 `docker-compose` 的一个替换项, 提供了相对于 docker 更好的性能. 感兴趣的小伙伴可以下来探索.
