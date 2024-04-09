@@ -740,7 +740,7 @@
           <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
-      链接
+      定制网址速查表
     </span>
   </a>
   
@@ -766,9 +766,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#other" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
-      Other
+      写在最后
     </span>
   </a>
   
@@ -835,7 +835,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              6 min read
+                              7 min read
                             
                           </span>
                         </div>
@@ -860,6 +860,12 @@
 
 <h1 id="dev-envrionment-as-code-devbox">Dev Envrionment As Code - Devbox 使用指南</h1>
 <h2 id="tldr">TLDR</h2>
+<p>本文介绍了使用 devbox, 以开发环境即代码的方式搭建了团队本地开发环境, 同时介绍了一些使用 devbox 实践, 帮助团队提高开发效率</p>
+<ol>
+<li>集成 <code>pre-commit</code></li>
+<li>集成 <code>co-author</code> 脚本</li>
+<li>定制化命令</li>
+</ol>
 <h2 id="_1">挑战</h2>
 <p>切换项目是一个 TWer 需要面对的挑战, 当做为一个项目新人, 比较重要的一项工作就是下载代码, 安装依赖, 使代码能正确在本地启动并运行.</p>
 <p>常常需要以下几个步骤</p>
@@ -875,9 +881,11 @@
 <ol>
 <li><strong>文档更新滞后</strong> - 大多数时候, 随着项目的演进, 文档大部分时候总是滞后并缺少维护. 最终都是新人花很多的时间进行定位</li>
 <li><strong>运行环境不一致</strong> - 项目中成员的机器可能都装了不同版本的 JVM, NodeJs, ruby, python 作为默认开发环境, 各个版本五花八门. 导致应用在某些特定版本的开发环境上表现不一致. 当在不同项目中切换时, 经常需要引入不同虚拟机管理工具 如 <code>NVM</code>, <code>RVM</code>, <code>asdf</code>, <code>SDKMan</code></li>
-<li><strong>手动安装的不可重复性</strong> - 手动安装的命令/程序不可靠,</li>
+<li><strong>手动安装的不可重复性</strong> - 手动安装的命令/程序不可靠,<ul>
 <li>如命令版本太新/太旧导致, 导致不能运行</li>
 <li>如经常会漏掉执行一些初始化脚本</li>
+</ul>
+</li>
 </ol>
 <h2 id="devbox">为什么是 Devbox</h2>
 <p><a href="https://www.jetpack.io/devbox/docs/">Devbox</a> 系统级(System level)的包管理程序, 如<code>yarn/npm</code> 之余 NodeJs.</p>
@@ -999,6 +1007,7 @@ eval &quot;\$(devbox generate direnv --print-envrc)&quot;
 EOF
 </code></pre>
 <p>至此, 团队成员只需首次安装 <code>direnv</code> 和 <code>devbox</code> 即可.它们将自动帮助团队统一(unify)开发环境, 且无需任何额外配置.</p>
+<p><img alt="direnv" src="../../../002-conventional-commit/devbox-direnv.gif" /></p>
 <h3 id="-pre-commit-hooks">自动初始化 - pre-commit hooks</h3>
 <p><a href="https://pre-commit.com/#intro">pre-commit</a> 是一个命令行工具, 它可通过一个简单的配置文件管理和维护 <code>git commit/push</code> 钩子。</p>
 <p><code>pre-commit</code> 允许我们共享一些通用的 git hooks，从而使团队获得统一的 git 体验.</p>
@@ -1075,6 +1084,9 @@ echo &quot;$MESSAGE&quot; &gt; $1
   }
 }
 </code></pre>
+<p><img alt="co author" src="../../../002-conventional-commit/co-author.gif" /></p>
+<p>由于录制原因, co-author 真实截图如下:</p>
+<p><img alt="co author" src="../../../002-conventional-commit/co-author.png" /></p>
 <h3 id="-conventional-commits">统一的提交格式 - 约定式提交(Conventional Commits)</h3>
 <p><a href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits</a> 是</p>
 <blockquote>
@@ -1115,6 +1127,8 @@ Refs: #123
   }
 }
 </code></pre>
+<p>如果团队开发每次提交代码需要将 Jira 卡号加入 commit 的信息可以使用插件 <code>cz-conventional-changelog-for-jira</code>, 如图</p>
+<p><img alt="commit" src="../../../002-conventional-commit/commit.gif" /></p>
 <h3 id="_4">定制命令</h3>
 <p>借助 <code>direnv</code> 的自动加载功能, 以及 devbox 安装依赖. 我们可以为项目定制快捷操作</p>
 <p><code>.envrc</code> 代码如下</p>
@@ -1164,7 +1178,11 @@ PATH_add &quot;$alias_dir&quot;
 <li><code>gpush</code>, 推送代码到远端分支</li>
 <li><code>h</code>, 帮助列出所有的快捷命令, 但是需要 <code>devbox</code> 提前安装 <code>csvlook</code> 和 <code>lolcat</code></li>
 </ul>
-<h4 id="_5">链接</h4>
+<p>效果如下</p>
+<p><img alt="customize command" src="../../../002-conventional-commit/customize-command.gif" /></p>
+<h4 id="_5">定制网址速查表</h4>
+<p>利用以上脚本, 同时可以将项目相关的一些链接/网址加入到表中, 让开发人员在开发过程中丝滑地找到相关资源; 还可以加入 Onboarding 的链接, 方便新人.</p>
+<p><img alt="handy link" src="../../../002-conventional-commit/handy-link.png" /></p>
 <h3 id="_6">本地秘钥管理</h3>
 <p>在日常工作中, 开发人员有时需要在 shell 中设置一些环境变量来执行命令, 例如 <code>ARTIFACTORY_TOKEN</code>, <code>GITHUB_TOKEN</code>. 通常, 我们会把这些秘钥都放在 <code>.zshrc</code> 或 <code>.bashrc</code> 中, 但这样做并不雅观, 会污染全局环境.</p>
 <p>使用 <code>envrc</code>, 我们可以在项目中设置环境.</p>
@@ -1177,8 +1195,8 @@ export GITHUB_TOKEN='xxx'
 </code></pre>
 <p>同时不要忘记将 <code>.env.local</code> 添加到 <code>.gitignore</code></p>
 <p>至此, 在进入目录项目后, 这些关于秘钥的环境变量才会加载.</p>
-<h2 id="other">Other</h2>
-<p>Replace for docker</p>
+<h2 id="_7">写在最后</h2>
+<p>结合 devbox 可以一定程度帮助团队提高开发效率. Devbox 也可以和各种 CI 平台集成, 提供统一的构建和开发环境, 并且devbox 也提供了对 <a href="https://github.com/F1bonacc1/process-compose">process-compose</a> 集成, 作为 <code>docker-compose</code> 的一个替换项, 提供了相对于 docker 更好的性能. 感兴趣的小伙伴可以下来探索.</p>
 
 
 
