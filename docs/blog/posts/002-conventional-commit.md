@@ -378,8 +378,6 @@ PATH_add "$alias_dir"
 * `gpush`, 推送代码到远端分支
 * `h`, 帮助列出所有的快捷命令, 但是需要 `devbox` 提前安装 `csvlook` 和 `lolcat`
 
-
-
 #### 链接
 
 ### 本地秘钥管理
