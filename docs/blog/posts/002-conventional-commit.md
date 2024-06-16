@@ -12,13 +12,12 @@ date:
 
 ## TLDR
 
-本文介绍了使用 devbox, 以开发环境即代码的方式搭建了团队本地开发环境, 同时介绍了一些使用 devbox 实践, 帮助团队提高开发效率
+本文介绍了使用 devbox, 以 `开发环境即代码` 的方式搭建了团队本地开发环境, 同时介绍了一些团队中基于 devbox 实践经验, 有效帮助团队提高开发效率
 
-1. 集成 `pre-commit`
-2. 集成 `co-author` 脚本
-3. 定制化命令
-
-
+1. 集成 `pre-commit`, 自动初始化
+2. 集成 `co-author` 脚本, 自动添加pair
+3. 集成 conventional-commit, 规范提交信息
+4. 为团队定制化指令, 提供快捷方式
 
 ## 挑战
 
@@ -28,11 +27,10 @@ date:
 
 1. 下载应用的运行环境或编译环境, 如`JDK`, `NodeJs`, `ruby`, `python`, `gcc` 或 `rustup`, 并且版本需要一致
 2. 下载应用包管理程序, `yarn`, `gradle/maven`, `sbt`, `cargo`, `bundler`, 并保证版本一致
-3. 设置一些构建/运行程序必要环境变量, 比如企业内部maven repository地址/token, npm retristry 地址/Token
-4. 下载安装一些能帮助开发/部署/管理应用的脚本/命令, 如 `pre-commit`, `tf-lint`, `kubectl`, `awscli`等
+3. 设置构建/运行程序必要环境变量, 比如企业内部maven repository地址/token, npm retristry 地址/Token
+4. 下载安装 "开发/部署/管理" 应用的脚本/命令, 如 `pre-commit`, `tf-lint`, `kubectl`, `awscli`等
 5. 手动运行一些初始化脚本, 如 `pre-commit init` 安装 `git-hooks`
 6. 学习使用一些项目定制好的脚本, 可以快速启动项目
-
 
 通常项目代码里的 `README.md` 会提供详细的运行文档, 新人根据文档手动执行各种命令, 完成安装运行; 如果遇到问题, 找人提供对应的指导. 这种模式存在几个问题:
 
@@ -44,11 +42,11 @@ date:
 
 ## 为什么是 Devbox
 
-[Devbox](https://www.jetpack.io/devbox/docs/) 系统级(System level)的包管理程序, 如`yarn/npm` 之余 NodeJs.
+[Devbox](https://www.jetpack.io/devbox/docs/) 系统级(System level)的包管理程序, 如`yarn/npm` 之于 NodeJs.
 
 `Devbox` 根植于 [Nix-shell](https://nixos.org/manual/nix/stable/command-ref/nix-shell), 不同于 `Nix-shell`繁杂的配置脚本, `Devbox` 提供了用户友好的配置方式.
 
-一份`Devbox` 的配置文件(`devbox.json`)文件如下
+以下是一份`Devbox` 的配置文件(`devbox.json`):
 
 ```json
 {
@@ -80,18 +78,16 @@ date:
 
 根据上面的配置文件，Devbox可以帮助简化环境配置:
 
-1. 帮助自动安装上面配置文件中声明的所有依赖项，例如JDK, NodeJS, 请参照配置中 `packages`
-2. 将环境变量导入 shell，参照上面的字段 `env`.
-3. 声明 `init_hooks`, 来准备一些数据或初始化shell环境，参考上面的 `init_hook` 字段.
-4. 声明日常使用的随手命令，参考上面的字段 `scrpts`.
+1. **自动安装依赖项**，例如JDK, NodeJS, 请参照配置中 `packages`
+2. **自动环境变量导入**，参照上面的字段 `env`.
+3. **初始化脚本**, 来准备一些数据或初始化shell环境，参考上面的 `init_hook` 字段.
+4. **定制命令**，参考上面的字段 `scripts`.
 
-并且 `devbox` 会生成 `devbox.lock`, 类似于 `yarn.lock`, 进行锁定版本. 当将 `devbox.json` 和 `devbox.lock` 托管到 git 后, `devbox install` 就能帮助下载所有的依赖, 并保证所有版本一致.
+并且 `devbox` 会生成 `devbox.lock`, 类似于 `yarn.lock`, 进行锁定版本. 当将 `devbox.json` 和 `devbox.lock` 托管到 git 后, 执行`devbox install` 就能帮助下载所有的依赖, 并保证不同机器上安装的版本一致.
 
 ### 快速上手
 
-因为 `Nix-shell` 仅对 `Linux`, `macOS` 这两个平台做了支持, 所以 `Devbox` 也只支持了这两个平台.
-
-更多细节可以参考官方文档 [quick start](https://www.jetpack.io/devbox/docs/quickstart/)
+因为 `Nix-shell` 仅对 `Linux`, `macOS` 这两个平台做了支持, 所以 `Devbox` 也只支持了这两个平台. 更多细节可以参考官方文档 [quick start](https://www.jetpack.io/devbox/docs/quickstart/)
 
 * 安装/初始化 `devbox`
 
@@ -208,7 +204,7 @@ EOF
 }
 ```
 
-`pre-commit` 配置文件如下,开发人员的修改都会在 commit 前根据下面列出的所有规则进行检查.
+`pre-commit` 配置文件如下, 所有修动都会在提交时, 根据以下规则进行检查.
 
 ```yaml
 fail_fast: true
@@ -231,9 +227,9 @@ repos:
 
 ### 定制化脚本 - co-author.sh
 
-结对编程(pair programming)在我们的日常编码工作中扮演着重要角色.在结对过程中，当在 git 中提交信息时，一般都需要在提交信息(commit message)中指定的结对对象.
+结对编程(pair programming)在我们的日常编码工作中扮演着重要角色.在结对过程中，当在 git 中提交信息时，一般都需要在提交信息(commit message)中指定共同作者
 
-根据 [github 的规范](https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors#creating-co-authored-commits-using-github-desktop), 可以在 commit message 按照如下格式指定 co-author, github 就会按照内容标记提交人.
+根据 [github 的规范](https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors#creating-co-authored-commits-using-github-desktop), 可以在 commit message 按照如下格式指定 co-author, github 就会按照提交的内容展示共同作者.
 
 ```bash
 $ git commit -m "Refactor usability tests.
@@ -243,7 +239,7 @@ Co-authored-by: NAME <NAME@EXAMPLE.COM>
 Co-authored-by: ANOTHER-NAME <ANOTHER-NAME@EXAMPLE.COM>"
 ```
 
-下面这个脚本可以如果设置为 git hooks - `prepare-commit-msg`, 可以让在写完提交信息之后, 会弹出选择列表, 让选择 `Co-author`.
+下面这个脚本可以设置为 git-hooks - `prepare-commit-msg`, 在提交信息之后, 终端会弹出选择列表, 让选择 `Co-author`.
 
 ```bash
 #!/bin/bash
@@ -282,11 +278,13 @@ echo "$MESSAGE" > $1
 }
 ```
 
+运行效果如下:
+
 ![co author](./002-conventional-commit/co-author.gif)
 
 由于录制原因, co-author 真实截图如下:
 
-![co author](./002-conventional-commit/co-author.png)
+![co author-snapshot](./002-conventional-commit/co-author.png)
 
 ### 统一的提交格式 - 约定式提交(Conventional Commits)
 
@@ -294,7 +292,7 @@ echo "$MESSAGE" > $1
 
 > A specification for adding human and machine readable meaning to commit messages
 
-按照传统的提交方式，提交信息的结构应如下所示：
+按照 `Conventional Commits` 提倡的方式，提交信息的结构应如下所示：
 
 ```plain
 <type>[optional scope]: <description>
@@ -317,7 +315,7 @@ Reviewed-by: Z
 Refs: #123
 ```
 
-使用 Conventional Commits, repo 中的所有提交信息都会保持一致.引入 [git-cz](https://github.com/streamich/git-cz) 和 [cz-git](https://cz-git.qbb.sh/guide/introduction) 工具，团队就能轻松地以交互式的方式生成 `Conventional Commits`
+使用 Conventional Commits, repo 中的所有提交信息都会保持一致.通过引入 [git-cz](https://github.com/streamich/git-cz) 和 [cz-git](https://cz-git.qbb.sh/guide/introduction) 工具，团队就能轻松地以交互式的方式生成符合规范的提交
 
 ![git-cz](https://user-images.githubusercontent.com/40693636/188255006-b9df9837-4678-4085-9395-e2905d7ec7de.gif)
 
@@ -339,7 +337,7 @@ Refs: #123
 }
 ```
 
-如果团队开发每次提交代码需要将 Jira 卡号加入 commit 的信息可以使用插件 `cz-conventional-changelog-for-jira`, 如图
+如果团队开发每次提交代码需要将 Jira 卡号加入 commit 的信息可以使用插件 `cz-conventional-changelog-for-jira`, 如图所示
 
 ![commit](./002-conventional-commit/commit.gif)
 
@@ -413,8 +411,7 @@ PATH_add "$alias_dir"
 
 使用 `envrc`, 我们可以在项目中设置环境.
 
-在 `.envrc` 中，添加代码 `[[ -e .env.local ]] && source .env.local`
-要求开发人员在本地项目创建 `.env.local`
+在 `.envrc` 中，添加代码 `[[ -e .env.local ]] && source .env.local`, 并要求开发人员在本地项目创建 `.env.local`
 
 ```bash
 export ARTIFACTORY_USER="xxxx"
@@ -430,3 +427,5 @@ export GITHUB_TOKEN='xxx'
 ## 写在最后
 
 结合 devbox 可以一定程度帮助团队提高开发效率. Devbox 也可以和各种 CI 平台集成, 提供统一的构建和开发环境, 并且devbox 也提供了对 [process-compose](https://github.com/F1bonacc1/process-compose) 集成, 作为 `docker-compose` 的一个替换项, 提供了相对于 docker 更好的性能. 感兴趣的小伙伴可以下来探索.
+
+PS: 所有代码可以在 [example](https://github.com/bobzhangwz/myblog) 找到.
