@@ -12,6 +12,8 @@
         <link rel="prev" href="../../03/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E6%8F%90%E4%BA%A41---pre-commit/">
       
       
+        <link rel="next" href="../../05/%E7%A8%8B%E5%BA%8F%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
+      
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.15">
@@ -860,11 +862,12 @@
 
 <h1 id="dev-envrionment-as-code-devbox">Dev Envrionment As Code - Devbox 使用指南</h1>
 <h2 id="tldr">TLDR</h2>
-<p>本文介绍了使用 devbox, 以开发环境即代码的方式搭建了团队本地开发环境, 同时介绍了一些使用 devbox 实践, 帮助团队提高开发效率</p>
+<p>本文介绍了使用 devbox, 以 <code>开发环境即代码</code> 的方式搭建了团队本地开发环境, 同时介绍了一些团队中基于 devbox 实践经验, 有效帮助团队提高开发效率</p>
 <ol>
-<li>集成 <code>pre-commit</code></li>
-<li>集成 <code>co-author</code> 脚本</li>
-<li>定制化命令</li>
+<li>集成 <code>pre-commit</code>, 自动初始化</li>
+<li>集成 <code>co-author</code> 脚本, 自动添加pair</li>
+<li>集成 conventional-commit, 规范提交信息</li>
+<li>为团队定制化指令, 提供快捷方式</li>
 </ol>
 <h2 id="_1">挑战</h2>
 <p>切换项目是一个 TWer 需要面对的挑战, 当做为一个项目新人, 比较重要的一项工作就是下载代码, 安装依赖, 使代码能正确在本地启动并运行.</p>
@@ -872,8 +875,8 @@
 <ol>
 <li>下载应用的运行环境或编译环境, 如<code>JDK</code>, <code>NodeJs</code>, <code>ruby</code>, <code>python</code>, <code>gcc</code> 或 <code>rustup</code>, 并且版本需要一致</li>
 <li>下载应用包管理程序, <code>yarn</code>, <code>gradle/maven</code>, <code>sbt</code>, <code>cargo</code>, <code>bundler</code>, 并保证版本一致</li>
-<li>设置一些构建/运行程序必要环境变量, 比如企业内部maven repository地址/token, npm retristry 地址/Token</li>
-<li>下载安装一些能帮助开发/部署/管理应用的脚本/命令, 如 <code>pre-commit</code>, <code>tf-lint</code>, <code>kubectl</code>, <code>awscli</code>等</li>
+<li>设置构建/运行程序必要环境变量, 比如企业内部maven repository地址/token, npm retristry 地址/Token</li>
+<li>下载安装 "开发/部署/管理" 应用的脚本/命令, 如 <code>pre-commit</code>, <code>tf-lint</code>, <code>kubectl</code>, <code>awscli</code>等</li>
 <li>手动运行一些初始化脚本, 如 <code>pre-commit init</code> 安装 <code>git-hooks</code></li>
 <li>学习使用一些项目定制好的脚本, 可以快速启动项目</li>
 </ol>
@@ -888,9 +891,9 @@
 </li>
 </ol>
 <h2 id="devbox">为什么是 Devbox</h2>
-<p><a href="https://www.jetpack.io/devbox/docs/">Devbox</a> 系统级(System level)的包管理程序, 如<code>yarn/npm</code> 之余 NodeJs.</p>
+<p><a href="https://www.jetpack.io/devbox/docs/">Devbox</a> 系统级(System level)的包管理程序, 如<code>yarn/npm</code> 之于 NodeJs.</p>
 <p><code>Devbox</code> 根植于 <a href="https://nixos.org/manual/nix/stable/command-ref/nix-shell">Nix-shell</a>, 不同于 <code>Nix-shell</code>繁杂的配置脚本, <code>Devbox</code> 提供了用户友好的配置方式.</p>
-<p>一份<code>Devbox</code> 的配置文件(<code>devbox.json</code>)文件如下</p>
+<p>以下是一份<code>Devbox</code> 的配置文件(<code>devbox.json</code>):</p>
 <pre><code class="language-json">{
   &quot;$schema&quot;: &quot;https://raw.githubusercontent.com/jetpack-io/devbox/0.10.1/.schema/devbox.schema.json&quot;,
   &quot;packages&quot;: [
@@ -919,15 +922,14 @@
 </code></pre>
 <p>根据上面的配置文件，Devbox可以帮助简化环境配置:</p>
 <ol>
-<li>帮助自动安装上面配置文件中声明的所有依赖项，例如JDK, NodeJS, 请参照配置中 <code>packages</code></li>
-<li>将环境变量导入 shell，参照上面的字段 <code>env</code>.</li>
-<li>声明 <code>init_hooks</code>, 来准备一些数据或初始化shell环境，参考上面的 <code>init_hook</code> 字段.</li>
-<li>声明日常使用的随手命令，参考上面的字段 <code>scrpts</code>.</li>
+<li><strong>自动安装依赖项</strong>，例如JDK, NodeJS, 请参照配置中 <code>packages</code></li>
+<li><strong>自动环境变量导入</strong>，参照上面的字段 <code>env</code>.</li>
+<li><strong>初始化脚本</strong>, 来准备一些数据或初始化shell环境，参考上面的 <code>init_hook</code> 字段.</li>
+<li><strong>定制命令</strong>，参考上面的字段 <code>scripts</code>.</li>
 </ol>
-<p>并且 <code>devbox</code> 会生成 <code>devbox.lock</code>, 类似于 <code>yarn.lock</code>, 进行锁定版本. 当将 <code>devbox.json</code> 和 <code>devbox.lock</code> 托管到 git 后, <code>devbox install</code> 就能帮助下载所有的依赖, 并保证所有版本一致.</p>
+<p>并且 <code>devbox</code> 会生成 <code>devbox.lock</code>, 类似于 <code>yarn.lock</code>, 进行锁定版本. 当将 <code>devbox.json</code> 和 <code>devbox.lock</code> 托管到 git 后, 执行<code>devbox install</code> 就能帮助下载所有的依赖, 并保证不同机器上安装的版本一致.</p>
 <h3 id="_2">快速上手</h3>
-<p>因为 <code>Nix-shell</code> 仅对 <code>Linux</code>, <code>macOS</code> 这两个平台做了支持, 所以 <code>Devbox</code> 也只支持了这两个平台.</p>
-<p>更多细节可以参考官方文档 <a href="https://www.jetpack.io/devbox/docs/quickstart/">quick start</a></p>
+<p>因为 <code>Nix-shell</code> 仅对 <code>Linux</code>, <code>macOS</code> 这两个平台做了支持, 所以 <code>Devbox</code> 也只支持了这两个平台. 更多细节可以参考官方文档 <a href="https://www.jetpack.io/devbox/docs/quickstart/">quick start</a></p>
 <ul>
 <li>安装/初始化 <code>devbox</code></li>
 </ul>
@@ -1024,7 +1026,7 @@ EOF
   }
 }
 </code></pre>
-<p><code>pre-commit</code> 配置文件如下,开发人员的修改都会在 commit 前根据下面列出的所有规则进行检查.</p>
+<p><code>pre-commit</code> 配置文件如下, 所有修动都会在提交时, 根据以下规则进行检查.</p>
 <pre><code class="language-yaml">fail_fast: true
 default_install_hook_types:
   - pre-commit
@@ -1043,15 +1045,15 @@ repos:
       - id: trailing-whitespace
 </code></pre>
 <h3 id="-co-authorsh">定制化脚本 - co-author.sh</h3>
-<p>结对编程(pair programming)在我们的日常编码工作中扮演着重要角色.在结对过程中，当在 git 中提交信息时，一般都需要在提交信息(commit message)中指定的结对对象.</p>
-<p>根据 <a href="https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors#creating-co-authored-commits-using-github-desktop">github 的规范</a>, 可以在 commit message 按照如下格式指定 co-author, github 就会按照内容标记提交人.</p>
+<p>结对编程(pair programming)在我们的日常编码工作中扮演着重要角色.在结对过程中，当在 git 中提交信息时，一般都需要在提交信息(commit message)中指定共同作者</p>
+<p>根据 <a href="https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors#creating-co-authored-commits-using-github-desktop">github 的规范</a>, 可以在 commit message 按照如下格式指定 co-author, github 就会按照提交的内容展示共同作者.</p>
 <pre><code class="language-bash">$ git commit -m &quot;Refactor usability tests.
 &gt;
 &gt;
 Co-authored-by: NAME &lt;NAME@EXAMPLE.COM&gt;
 Co-authored-by: ANOTHER-NAME &lt;ANOTHER-NAME@EXAMPLE.COM&gt;&quot;
 </code></pre>
-<p>下面这个脚本可以如果设置为 git hooks - <code>prepare-commit-msg</code>, 可以让在写完提交信息之后, 会弹出选择列表, 让选择 <code>Co-author</code>.</p>
+<p>下面这个脚本可以设置为 git-hooks - <code>prepare-commit-msg</code>, 在提交信息之后, 终端会弹出选择列表, 让选择 <code>Co-author</code>.</p>
 <pre><code class="language-bash">#!/bin/bash
 set -euo pipefail
 if [ ! -t 1 ] ; then exit 0; fi
@@ -1084,15 +1086,16 @@ echo &quot;$MESSAGE&quot; &gt; $1
   }
 }
 </code></pre>
+<p>运行效果如下:</p>
 <p><img alt="co author" src="../../../002-conventional-commit/co-author.gif" /></p>
 <p>由于录制原因, co-author 真实截图如下:</p>
-<p><img alt="co author" src="../../../002-conventional-commit/co-author.png" /></p>
+<p><img alt="co author-snapshot" src="../../../002-conventional-commit/co-author.png" /></p>
 <h3 id="-conventional-commits">统一的提交格式 - 约定式提交(Conventional Commits)</h3>
 <p><a href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits</a> 是</p>
 <blockquote>
 <p>A specification for adding human and machine readable meaning to commit messages</p>
 </blockquote>
-<p>按照传统的提交方式，提交信息的结构应如下所示：</p>
+<p>按照 <code>Conventional Commits</code> 提倡的方式，提交信息的结构应如下所示：</p>
 <pre><code class="language-plain">&lt;type&gt;[optional scope]: &lt;description&gt;
 
 [optional body]
@@ -1110,7 +1113,7 @@ obsolete now.
 Reviewed-by: Z
 Refs: #123
 </code></pre>
-<p>使用 Conventional Commits, repo 中的所有提交信息都会保持一致.引入 <a href="https://github.com/streamich/git-cz">git-cz</a> 和 <a href="https://cz-git.qbb.sh/guide/introduction">cz-git</a> 工具，团队就能轻松地以交互式的方式生成 <code>Conventional Commits</code></p>
+<p>使用 Conventional Commits, repo 中的所有提交信息都会保持一致.通过引入 <a href="https://github.com/streamich/git-cz">git-cz</a> 和 <a href="https://cz-git.qbb.sh/guide/introduction">cz-git</a> 工具，团队就能轻松地以交互式的方式生成符合规范的提交</p>
 <p><img alt="git-cz" src="https://user-images.githubusercontent.com/40693636/188255006-b9df9837-4678-4085-9395-e2905d7ec7de.gif" /></p>
 <p>借助 <code>devbox</code>, 我们也能自动化所有 <code>git-cz</code> 的安装操作, 之后，我们就可以使用 <code>git cz</code> 以交互方式提交代码了.</p>
 <pre><code class="language-json">{
@@ -1127,7 +1130,7 @@ Refs: #123
   }
 }
 </code></pre>
-<p>如果团队开发每次提交代码需要将 Jira 卡号加入 commit 的信息可以使用插件 <code>cz-conventional-changelog-for-jira</code>, 如图</p>
+<p>如果团队开发每次提交代码需要将 Jira 卡号加入 commit 的信息可以使用插件 <code>cz-conventional-changelog-for-jira</code>, 如图所示</p>
 <p><img alt="commit" src="../../../002-conventional-commit/commit.gif" /></p>
 <h3 id="_4">定制命令</h3>
 <p>借助 <code>direnv</code> 的自动加载功能, 以及 devbox 安装依赖. 我们可以为项目定制快捷操作</p>
@@ -1186,8 +1189,7 @@ PATH_add &quot;$alias_dir&quot;
 <h3 id="_6">本地秘钥管理</h3>
 <p>在日常工作中, 开发人员有时需要在 shell 中设置一些环境变量来执行命令, 例如 <code>ARTIFACTORY_TOKEN</code>, <code>GITHUB_TOKEN</code>. 通常, 我们会把这些秘钥都放在 <code>.zshrc</code> 或 <code>.bashrc</code> 中, 但这样做并不雅观, 会污染全局环境.</p>
 <p>使用 <code>envrc</code>, 我们可以在项目中设置环境.</p>
-<p>在 <code>.envrc</code> 中，添加代码 <code>[[ -e .env.local ]] &amp;&amp; source .env.local</code>
-要求开发人员在本地项目创建 <code>.env.local</code></p>
+<p>在 <code>.envrc</code> 中，添加代码 <code>[[ -e .env.local ]] &amp;&amp; source .env.local</code>, 并要求开发人员在本地项目创建 <code>.env.local</code></p>
 <pre><code class="language-bash">export ARTIFACTORY_USER=&quot;xxxx&quot;
 export ARTIFACTORY_TOKEN=&quot;$(security find-generic-password -s artifactory-token -w)&quot;
 export ARTIFACTORY_AUTH_TOKEN=$(echo -n &quot;${ARTIFACTORY_USER}:${ARTIFACTORY_TOKEN}&quot; | base64 -w 0)
@@ -1197,6 +1199,7 @@ export GITHUB_TOKEN='xxx'
 <p>至此, 在进入目录项目后, 这些关于秘钥的环境变量才会加载.</p>
 <h2 id="_7">写在最后</h2>
 <p>结合 devbox 可以一定程度帮助团队提高开发效率. Devbox 也可以和各种 CI 平台集成, 提供统一的构建和开发环境, 并且devbox 也提供了对 <a href="https://github.com/F1bonacc1/process-compose">process-compose</a> 集成, 作为 <code>docker-compose</code> 的一个替换项, 提供了相对于 docker 更好的性能. 感兴趣的小伙伴可以下来探索.</p>
+<p>PS: 所有代码可以在 <a href="https://github.com/bobzhangwz/myblog">example</a> 找到.</p>
 
 
 
