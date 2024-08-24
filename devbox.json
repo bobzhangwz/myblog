@@ -5,10 +5,9 @@
     "gitleaks@latest",
     "cz-cli@latest",
     "nodePackages.pnpm@latest",
-    "csvkit@latest",
     "cowsay@latest",
-    "lolcat@latest",
-    "python@3.12"
+    "python@3.12",
+    "yq-go@latest"
   ],
   "shell": {
     "init_hook": [
@@ -19,7 +18,7 @@
         "pip install -r requirements.txt -q",
         "pre-commit install",
         "if [[ ! -e ./node_modules/cz-git ]]; then commitizen init cz-git --pnpm --save-dev --save-exact --force; fi",
-        "cowsay -f koala 'Please try `h` in shell' | lolcat"
+        "cowsay -f koala 'Please try `h` in shell'"
       ]
     }
   }
