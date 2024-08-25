@@ -40,6 +40,8 @@ date:
      * 如命令版本太新/太旧导致, 导致不能运行
      * 如经常会漏掉执行一些初始化脚本
 
+<!-- more -->
+
 ## 为什么是 Devbox
 
 [Devbox](https://www.jetpack.io/devbox/docs/) 系统级(System level)的包管理程序, 如`yarn/npm` 之于 NodeJs.

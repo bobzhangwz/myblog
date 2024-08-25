@@ -1,0 +1,33 @@
+commands:
+  - name: git-commit
+    alias: c
+    command: |
+      pre-commit run
+      export SKIP=unit-backend,unit-frontend,gitleaks,lint-frontend-js,lint-frontend-css,lint-backend,lint-functional-test-js,lint-terraform
+      git cz
+
+  - name: create_pr
+    alias: pr
+    command: ./run create_pr
+
+  - name: git-add
+    alias: a
+    command: git add . -p
+
+  - name: start-dev
+    alias: up
+    command: devbox services up
+
+  - name: git-push-remote
+    alias: gpush
+    command: git push --set-upstream origin $(git symbolic-ref --short HEAD) ${@}
+
+  - name: git-rebase
+    alias: grebase
+    command: git fetch origin main && git rebase origin/main
+
+links:
+  - name: git_pages
+    url: https://bobzhangwz.github.io/myblog/
+  - name: config_blog
+    url: https://squidfunk.github.io/mkdocs-material/setup/setting-up-a-blog/

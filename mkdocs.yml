@@ -1,19 +1,35 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 site_name: ICode
 theme:
   name: material
+  favicon: assets/favicon.ico
+  logo: assets/me.png
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/lead-pencil
+  palette:
+    primary: deep orange
+    accent: cyan
   features:
     - navigation.tabs
     - navigation.indexes
+    - navigation.expand
     - navigation.tabs.sticky
     - navigation.sections
     - navigation.path
     - toc.follow
     - navigation.top
+    - search
+    - search.suggest
+    - search.highlight
+    - content.action.edit
 plugins:
   - blog:
       blog_dir: blog
       post_date_format: short
+      blog_toc: true
       post_url_date_format: yyyy/MM
+      pagination_per_page: 5
       post_readtime: true
 repo_url: https://github.com/bobzhangwz/myblog
 edit_uri: blob/master/docs/

@@ -38,6 +38,8 @@ build.dependsOn addPreCommitGitHookOnBuild
 [pre-commit](https://pre-commit.com/) 正是一个开源的专注于管理 `Git Hooks` 的框架, 虽然他是由 python 编写的, 但他并不像 `husky` 一样, 仅仅只局限于一种语言,
 他对多种编程语言做了支持, 并提供了插件机制, 所以他可以是`通用`的.
 
+<!-- more -->
+
 ## 简单入门
 
 参照[pre-commit](https://pre-commit.com/)官方网站, 快速上手.
